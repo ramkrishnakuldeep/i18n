@@ -26,10 +26,17 @@ export function t(key: string) {
     const searcher = key.split('.');
     
     let data = win.languages[_language];
+    if (!data) {
+        return key; // Return key if language data not found
+    }
+    
     for (let i = 0; i < searcher.length; i++) {
+        if (!data || typeof data !== 'object') {
+            return key; // Return key if data is not valid
+        }
         data = data[searcher[i]];
-        if (!data) {
-            return '';
+        if (data === undefined || data === null) {
+            return key; // Return key if property not found
         }
     }
     return data || '';
